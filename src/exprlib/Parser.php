@@ -13,18 +13,19 @@ use exprlib\contexts\Scope;
 class Parser
 {
     public $precision = 15;
-    public $precisionType = null;
+    public $precisionType;
 
     protected $content;
-    protected $contextStack = array();
+    protected $contextStack = [];
+    /** @var Scope */
     protected $tree;
-    protected $tokens = array();
-    protected $vars = array();
+    protected $tokens = [];
+    protected $vars = [];
 
     /**
      * @param string $content content
      */
-    public function __construct($content = null)
+    public function __construct(string $content = null)
     {
         if (null !== $content) {
             $this->setContent($content);
@@ -36,12 +37,12 @@ class Parser
      * Parser::build('2+1')->evaluate();
      *
      * @param string  $content       content
-     * @param string  $precision     precision
-     * @param integer $precisionType precisionType
+     * @param int  $precision     precision
+     * @param int $precisionType precisionType
      *
      * @return Parser
      */
-    public static function build($content, $precision = 15, $precisionType = PHP_ROUND_HALF_UP)
+    public static function build(string $content, int $precision = 15, int $precisionType = PHP_ROUND_HALF_UP): Parser
     {
         $instance = new static($content);
         $instance->precision = $precision;
@@ -58,14 +59,14 @@ class Parser
      * of possible tokens in this case is predefined to numbers (ints of floats)
      * math operators (*, -, +, /, **, ^) and parentheses.
      */
-    public function tokenize()
+    protected function tokenize(): Parser
     {
-        $this->content = str_replace(array("\n","\r","\t"," "), '', $this->content);
+        $this->content = str_replace(["\n", "\r", "\t", " "], '', $this->content);
         $this->content = str_replace('**', '^', $this->content);
-        $this->content = str_replace('PI', (string) PI(), $this->content);
+        $this->content = str_replace('PI', (string)PI(), $this->content);
         $this->tokens = preg_split(
             '@
-              ([\d\.]+)
+              ([\d.]+)
               |(
                 sin\(
                 |log\(
@@ -82,7 +83,7 @@ class Parser
                 |sqrt\(
                 |if\(
                 |\+
-                |\-
+                |-
                 |\*
                 |/
                 |\^
@@ -102,7 +103,12 @@ class Parser
      * this is the the loop that transforms the tokens array into
      * a tree structure.
      */
-    public function parse()
+    /**
+     * @return $this
+     * @throws exceptions\OutOfScopeException
+     * @throws exceptions\UnknownTokenException
+     */
+    public function parse(): self
     {
         # this is the global scope which will contain the entire tree
         $this->pushContext(new Scope());
@@ -116,21 +122,34 @@ class Parser
         return $this;
     }
 
-    public function setVars(array $vars)
+    public function setVars(array $vars): Parser
     {
         if (count($vars)) {
-          $this->vars = array_merge($this->vars, $vars);
+            $this->vars = array_merge($this->vars, $vars);
         }
 
         return $this;
     }
 
-    public function evaluate()
+    /**
+     * @return float
+     * @throws exceptions\Exception
+     * @throws exceptions\OutOfScopeException
+     * @throws exceptions\UnknownTokenException
+     */
+    public function evaluate(): float
     {
         if (count($this->vars)) {
-            $this->content = str_replace(array_map(function($varName) {
-              return sprintf('{{%s}}', $varName);
-            }, array_keys($this->vars)), array_values($this->vars), $this->content);
+            $this->content = str_replace(
+                array_map(
+                    static function ($varName) {
+                        return sprintf('[%s]', $varName);
+                    },
+                    array_keys($this->vars)
+                ),
+                array_values($this->vars),
+                $this->content
+            );
         }
 
         if (!$this->tokens) {
@@ -144,11 +163,11 @@ class Parser
         return round($this->tree->evaluate(), $this->precision, $this->precisionType);
     }
 
-    public function setContent($content)
+    public function setContent($content): Parser
     {
         $this->content = $content;
         // clear tokens
-        $this->tokens = array();
+        $this->tokens = [];
         // clear tree
         $this->tree = null;
 
@@ -161,19 +180,21 @@ class Parser
      * and end to push, pop, and get the current element
      * from the stack.
      *******************************************************/
-
-    public function pushContext(IfContext $context)
+    /**
+     * @param Scope $context
+     */
+    public function pushContext(Scope $context): void
     {
-        array_push($this->contextStack, $context);
+        $this->contextStack[] = $context;
         $this->getContext()->setBuilder($this);
     }
 
-    public function popContext()
+    public function popContext(): Scope
     {
         return array_pop($this->contextStack);
     }
 
-    public function getContext()
+    public function getContext(): Scope
     {
         return end($this->contextStack);
     }

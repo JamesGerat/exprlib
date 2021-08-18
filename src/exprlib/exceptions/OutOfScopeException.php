@@ -2,6 +2,6 @@
 
 namespace exprlib\exceptions;
 
-class OutOfScopeException extends \Exception
+class OutOfScopeException extends Exception
 {
 }

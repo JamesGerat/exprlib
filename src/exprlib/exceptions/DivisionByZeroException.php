@@ -7,6 +7,6 @@ namespace exprlib\exceptions;
  *
  * @author Stephane PY <py.stephane1@gmail.com>
  */
-class DivisionByZeroException extends \Exception
+class DivisionByZeroException extends Exception
 {
 }

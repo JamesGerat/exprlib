@@ -1,9 +1,11 @@
 exprlib - PHP
 =============
+[![Build Status](https://api.travis-ci.com/JamesGerat/exprlib.svg)](https://travis-ci.com/github/JamesGerat/exprlib)
 
-[![Build Status](https://secure.travis-ci.org/TheSoftwareFarm/exprlib.png)](http://travis-ci.org/TheSoftwareFarm/exprlib)
+For migration from  [thesoftwarefarm/exprlib](https://github.com/thesoftwarefarm/exprlib) and another fork need:
 
-This library was forked from rezzza/exprlib, since it was abandoned and we think it's still useful.
+- replace var format from "{{a}}" to "[a]"
+- up php to 7.3
 
 An expression parser in PHP, code inspired from [codehackit](http://codehackit.blogspot.fr/2011/08/expression-parser-in-php.html)
 
@@ -11,7 +13,7 @@ An alternative to this is [Hoa/Math](https://github.com/hoaproject/Math)
 
 List of functions and features:
 
-- operators = * + -
+- operators = * + - ^
 - acos
 - cos
 - sin
@@ -25,7 +27,7 @@ List of functions and features:
 - min
 - max
 - if (condition, than, else)
-- var placing with {{varName}}
+- var placing with [varName]
 
 Examples:
 
@@ -65,24 +67,24 @@ exprlib\Parser::build('sum(10, 20, 30)')->evaluate(); // 60
 exprlib\Parser::build('avg(10, 20, 30)')->evaluate(); // 20
 exprlib\Parser::build('log(0)')->evaluate(); // -INF
 exprlib\Parser::build('log(0)*-1')->evaluate(); // INF
-exprlib\Parser::build(sprintf('acos(%s)', rad2deg(8))->evaluate(); // NAN
+exprlib\Parser::build(sprintf('acos(%s)', rad2deg(8)))->evaluate(); // NAN
 
 // min-max
 exprlib\Parser::build('max(10,20,30)')->evaluate(); // 30
 exprlib\Parser::build('min(10,20,30)')->evaluate(); // 10
 
 // if-elsing
-exprlib\Parser::build('if(1=1, 1, 0)')->evaluate() // 1
-exprlib\Parser::build('if(1<2, 1, 0)')->evaluate() // 0
-exprlib\Parser::build('if(1>2, 1, 0)')->evaluate() // 0
+exprlib\Parser::build('if(1=1, 1, 0)')->evaluate(); // 1
+exprlib\Parser::build('if(1<2, 1, 0)')->evaluate(); // 0
+exprlib\Parser::build('if(1>2, 1, 0)')->evaluate(); // 0
 
 // var placing
-exprlib\Parser::build('{{a}}+1')->setVars(array('a' => 3))->evaluate() // 4
-exprlib\Parser::build('{{a}}-{{b}}')->setVars(array('a' => 2, 'b' => 5))->evaluate() // -3
+exprlib\Parser::build('[a]+1')->setVars(['a' => 3])->evaluate(); // 4
+exprlib\Parser::build('[a]-[b]')->setVars(['a' => 2, 'b' => 5])->evaluate(); // -3
 
 // var placing with if-elsing
-exprlib\Parser::build('if({{a}}=5, 1, 0)')->setVars(array('a' => 5))->evaluate() // 1
-exprlib\Parser::build('if({{a}}>{{b}}, 1, 0)')->setVars(array('a' => 3, 'b' => 2))->evaluate() // 1
+exprlib\Parser::build('if([a]=5, 1, 0)')->setVars(['a' => 5])->evaluate(); // 1
+exprlib\Parser::build('if([a]>[b], 1, 0)')->setVars(['a' => 3, 'b' => 2])->evaluate(); // 1
 ```
 
 # Launch tests

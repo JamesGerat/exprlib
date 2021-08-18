@@ -9,8 +9,8 @@ namespace exprlib\contexts;
  */
 class ScopeGroup extends Scope
 {
-    protected $scopeGroups = array();
-    protected $groups = array();
+    protected $scopeGroups = [];
+    protected $groups = [];
 
     public function evaluate()
     {
