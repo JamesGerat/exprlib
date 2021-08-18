@@ -14,6 +14,6 @@ class Pow extends Scope
             throw new ParsingException('Power must have 2 arguments, ex: power(10,2)');
         }
 
-        return pow($result[0], $result[1]);
+        return $result[0] ** $result[1];
     }
 }

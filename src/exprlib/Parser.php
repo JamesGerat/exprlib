@@ -2,7 +2,6 @@
 
 namespace exprlib;
 
-use exprlib\contexts\IfContext;
 use exprlib\contexts\Scope;
 
 /**
@@ -132,7 +131,7 @@ class Parser
     }
 
     /**
-     * @return float
+     * @return float|array
      * @throws exceptions\Exception
      * @throws exceptions\OutOfScopeException
      * @throws exceptions\UnknownTokenException
@@ -194,7 +193,7 @@ class Parser
         return array_pop($this->contextStack);
     }
 
-    public function getContext(): Scope
+    public function getContext()
     {
         return end($this->contextStack);
     }

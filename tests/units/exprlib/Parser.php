@@ -4,16 +4,20 @@ namespace tests\units\exprlib;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
+use atoum\atoum\test;
+use exprlib\exceptions\DivisionByZeroException;
+use exprlib\exceptions\OutOfScopeException;
+use exprlib\exceptions\UnknownTokenException;
 use exprlib\Parser as ParserModel;
 use mageekguy\atoum;
 
 /**
  * Parser
  *
- * @uses   atoum\test
+ * @uses   \atoum\atoum\test
  * @author Stephane PY <py.stephane1@gmail.com>
  */
-class Parser extends atoum\test
+class Parser extends test
 {
     public function testExceptions()
     {
@@ -22,23 +26,23 @@ class Parser extends atoum\test
                 ParserModel::build('ß2+1')->evaluate();
             }
         )
-             ->isInstanceOf('exprlib\exceptions\UnknownTokenException')
-             ->hasMessage('"ß" is not supported yet');
+            ->isInstanceOf(UnknownTokenException::class)
+            ->hasMessage('"ß" is not supported yet');
 
         $this->exception(
             static function () {
-                ParserModel::build('2+1)')->evaluate();
+                    ParserModel::build('2+1)')->evaluate();
             }
         )
-             ->isInstanceOf('exprlib\exceptions\OutOfScopeException')
-             ->hasMessage('It misses an open scope');
+            ->isInstanceOf(OutOfScopeException::class)
+            ->hasMessage('It misses an open scope');
 
         $this->exception(
             static function () {
                 ParserModel::build('2/0')->evaluate();
             }
         )
-             ->isInstanceOf('exprlib\exceptions\DivisionByZeroException');
+            ->isInstanceOf(DivisionByZeroException::class);
     }
 
     /**
@@ -46,14 +50,12 @@ class Parser extends atoum\test
      */
     public function testOperations($operation, $result)
     {
-        $this->string((string)ParserModel::build($operation, '5')->evaluate())
-             ->isEqualTo((string)$result);
+        $this->string((string)ParserModel::build($operation, 5)->evaluate())
+            ->isEqualTo((string)$result);
     }
 
-    public function operationsDataProvider()
+    public function operationsDataProvider(): array
     {
-        $pi4 = M_PI_4;
-
         return [
             ['2+4/2+2', 6],
             ['2+4/2', 4],
@@ -68,6 +70,14 @@ class Parser extends atoum\test
             ['0.001 + 0.02', 0.021],
             ['10*-2', -20],
             ['-10*-2', 20],
+            ['4^-2', 0.0625],
+            ['4^0.5', 2],
+            ['-0.1=-0.1', 1],
+            ['1-1+1', 1],
+            ['100 - 80 - 90 + 100', 30],
+            ['5>1', 1],
+            ['1+0+0+0+1*2-1+1', 3],
+            ['1-1-if(1<5,10+10,100)', -20],
             // OPERATIONS
             // cos
             ['COS(0)', 1],
@@ -111,14 +121,6 @@ class Parser extends atoum\test
             ['log(0)*-1', INF],
             ['0.1=0.1', 1],
             [sprintf('acos(%s)', rad2deg(8)), NAN],
-            ['4^-2', 0.0625],
-            ['4^0.5', 2],
-            ['-0.1=-0.1', 1],
-            ['1-1+1', 1],
-            ['100 - 80 - 90 + 100', 30],
-            ['5>1', 1],
-            ['1+0+0+0+1*2-1+1', 3],
-            ['1-1-if(1<5,10+10,100)', -20],
         ];
     }
 }

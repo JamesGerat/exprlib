@@ -131,10 +131,10 @@ class Scope
      * - addi/subt, third order
      */
     /**
-     * @return float
+     * @return float|array
      * @throws Exception
      */
-    protected function expressionLoop(): float
+    protected function expressionLoop()
     {
         array_walk($this->operations, [$this, 'fixNegativeOperators']);
         $this->operations = array_values($this->operations);

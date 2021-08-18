@@ -3,7 +3,6 @@
 namespace exprlib\contexts\scope;
 
 use exprlib\contexts\Scope;
-use exprlib\exceptions\ParsingException;
 
 class Sum extends Scope
 {
