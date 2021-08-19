@@ -173,6 +173,11 @@ class Parser
         return $this;
     }
 
+    public function getContent()
+    {
+        return $this->content;
+    }
+
     /*******************************************************
      * the context stack functions. for the stack im using
      * an array with the functions array_push, array_pop,
