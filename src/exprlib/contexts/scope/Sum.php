@@ -2,9 +2,9 @@
 
 namespace exprlib\contexts\scope;
 
-use exprlib\contexts\Scope;
+use exprlib\contexts\ScopeGroup;
 
-class Sum extends Scope
+class Sum extends ScopeGroup
 {
     public function evaluate()
     {

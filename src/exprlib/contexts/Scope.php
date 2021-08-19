@@ -15,8 +15,8 @@ class Scope
     protected $builder;
     protected $content;
     protected $operations = [];
-    private const SUPPORTED_OPERATIONS = ['^', '/', '*', '+', '-', '>', '<', '='];
-    private const OPERATION_PRIORITY = [['^'], ['/', '*'], ['+', '-'], ['>', '<'], ['=']];
+    private const SUPPORTED_OPERATIONS = ['^', '/', '*', '+', '-', '>', '<', '=', '!='];
+    private const OPERATION_PRIORITY = [['^'], ['/', '*'], ['+', '-'], ['>', '<'], ['=', '!=']];
 
     public function __construct($content = null)
     {
@@ -114,7 +114,11 @@ class Scope
                 $this->operations[$i] = $operation->evaluate();
             }
         }
-        return  $this->expressionLoop();
+        $result = $this->expressionLoop();
+        if ($result !== false) {
+            return $result;
+        }
+        return false;
     }
 
     # order of operations:
@@ -156,7 +160,7 @@ class Scope
         }
 
         if (count($this->operations) !== 1) {
-            throw new ParsingException('String have wrong character');
+            return false;
         }
 
         return end($this->operations);
@@ -230,6 +234,9 @@ class Scope
                 break;
             case '<':
                 return $left < $right;
+                break;
+            case '!=':
+                return $left !== $right;
                 break;
             case '=':
                 return $left === $right;

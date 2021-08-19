@@ -120,7 +120,10 @@ class Parser extends test
             ['log(0)', -INF],
             ['log(0)*-1', INF],
             ['0.1=0.1', 1],
+            ['sum(1,2,3) - min(1,2,3)', 5],
             [sprintf('acos(%s)', rad2deg(8)), NAN],
+            ['1 != 1', 0],
+            ['1 != 0', 1],
         ];
     }
 }

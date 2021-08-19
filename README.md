@@ -13,7 +13,7 @@ An alternative to this is [Hoa/Math](https://github.com/hoaproject/Math)
 
 List of functions and features:
 
-- operators = * + - ^
+- operators = * + - ^ !=
 - acos
 - cos
 - sin
