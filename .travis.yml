@@ -7,7 +7,6 @@ php:
   - 8.0
 
 before_script:
-  - curl -s http://getcomposer.org/installer | php
   - composer install --dev
 
 script:

@@ -89,7 +89,7 @@ exprlib\Parser::build('if([a]>[b], 1, 0)')->setVars(['a' => 3, 'b' => 2])->evalu
 
 # Launch tests
 
-Look at .travis.yml
+Look at [.travis.yml](.travis.yml)
 
 # Todo
 
