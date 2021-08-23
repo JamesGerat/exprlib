@@ -3,7 +3,6 @@
 namespace exprlib\contexts\scope;
 
 use exprlib\contexts\ScopeGroup;
-use exprlib\exceptions\ParsingException;
 
 class Max extends ScopeGroup
 {

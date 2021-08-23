@@ -2,10 +2,10 @@
 
 namespace exprlib\contexts\scope;
 
-use exprlib\contexts\Scope;
+use exprlib\contexts\ScopeGroup;
 use exprlib\exceptions\ParsingException;
 
-class Pow extends Scope
+class Pow extends ScopeGroup
 {
     public function evaluate()
     {

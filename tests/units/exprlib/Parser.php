@@ -73,7 +73,16 @@ class Parser extends test
     {
         $this->exception(
             static function () {
-                ParserModel::build('ln(1,2)')->evaluate();
+                ParserModel::build('ln(1,2)-sin(1,2)')->evaluate();
+            }
+        )
+            ->isInstanceOf(ParsingException::class);
+    }
+    public function testArgumentsWithGroupException()
+    {
+        $this->exception(
+            static function () {
+                ParserModel::build('ln(1,2)-1')->evaluate();
             }
         )
             ->isInstanceOf(ParsingException::class);
@@ -158,6 +167,15 @@ class Parser extends test
             [sprintf('acos(%s)', rad2deg(8)), NAN],
             ['1 != 1', 0],
             ['1 != 0', 1],
+            ['0 | 0', 0],
+            ['1 | 0', 1],
+            ['0 | 1', 1],
+            ['1 | 1', 1],
+            ['0 & 0', 0],
+            ['1 & 0', 0],
+            ['0 & 1', 0],
+            ['1 & 1', 1],
+            ['1 & 1 | 1 & 0', 1],
         ];
     }
 }

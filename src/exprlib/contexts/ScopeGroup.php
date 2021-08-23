@@ -22,6 +22,9 @@ class ScopeGroup extends Scope
             $this->groups[] = $scopeGroup->evaluate();
         }
 
+        if (is_array($this->groups) && count($this->groups) === 1) {
+            return end($this->groups);
+        }
         return $this->groups;
     }
 

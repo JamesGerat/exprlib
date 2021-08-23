@@ -15,8 +15,8 @@ class Scope
     protected $builder;
     protected $content;
     protected $operations = [];
-    private const SUPPORTED_OPERATIONS = ['^', '/', '*', '+', '-', '>', '<', '=', '!='];
-    private const OPERATION_PRIORITY = [['^'], ['/', '*'], ['+', '-'], ['>', '<'], ['=', '!=']];
+    private const SUPPORTED_OPERATIONS = ['^', '/', '*', '+', '-', '>', '<', '=', '!=', '&', '|'];
+    private const OPERATION_PRIORITY = [['^'], ['/', '*'], ['+', '-'], ['>', '<'], ['=', '!='], ['&'], ['|']];
 
     public function __construct($content = null)
     {
@@ -247,6 +247,12 @@ class Scope
                 break;
             case '=':
                 return $left === $right;
+                break;
+            case '&':
+                return $left && $right;
+                break;
+            case '|':
+                return $left || $right;
                 break;
         }
         throw new ParsingException('Unknown operator:' . $mainOperator);

@@ -2,10 +2,10 @@
 
 namespace exprlib\contexts\scope;
 
-use exprlib\contexts\Scope;
+use exprlib\contexts\ScopeGroup;
 use exprlib\exceptions\ParsingException;
 
-class Log extends Scope
+class Log extends ScopeGroup
 {
     public function evaluate()
     {
@@ -25,9 +25,9 @@ class Log extends Scope
 
 
         if ($content === 'log(') {
-            return log10(parent::evaluate());
+            return log10($result);
         }
         // ln
-        return log(parent::evaluate());
+        return log($result);
     }
 }
