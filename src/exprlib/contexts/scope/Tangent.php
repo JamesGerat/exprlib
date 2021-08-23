@@ -3,11 +3,15 @@
 namespace exprlib\contexts\scope;
 
 use exprlib\contexts\Scope;
+use exprlib\exceptions\ParsingException;
 
 class Tangent extends Scope
 {
     public function evaluate()
     {
-        return tan(deg2rad(parent::evaluate()));
+        if (is_array($result = parent::evaluate())) {
+            throw new ParsingException('exp accept only one argument');
+        }
+        return tan(deg2rad($result));
     }
 }

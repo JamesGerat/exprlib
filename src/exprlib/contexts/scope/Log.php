@@ -11,7 +11,11 @@ class Log extends Scope
     {
         $result = parent::evaluate();
 
+        $content = (string) $this->content;
         if (is_array($result)) {
+            if ($content === 'ln(') {
+                throw new ParsingException('Ln accepts only 1 argument');
+            }
             if (count($result) !== 2) {
                 throw new ParsingException('Log accepts only 2 arguments');
             }
@@ -19,7 +23,6 @@ class Log extends Scope
             return log($result[0], $result[1]);
         }
 
-        $content = (string) $this->content;
 
         if ($content === 'log(') {
             return log10(parent::evaluate());

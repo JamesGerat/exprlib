@@ -7,6 +7,7 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 use atoum\atoum\test;
 use exprlib\exceptions\DivisionByZeroException;
 use exprlib\exceptions\OutOfScopeException;
+use exprlib\exceptions\ParsingException;
 use exprlib\exceptions\UnknownTokenException;
 use exprlib\Parser as ParserModel;
 use mageekguy\atoum;
@@ -19,7 +20,7 @@ use mageekguy\atoum;
  */
 class Parser extends test
 {
-    public function testExceptions()
+    public function testUnknownTokenException()
     {
         $this->exception(
             static function () {
@@ -29,20 +30,53 @@ class Parser extends test
             ->isInstanceOf(UnknownTokenException::class)
             ->hasMessage('"ß" is not supported yet');
 
+    }
+    public function testOutOfScopeException()
+    {
         $this->exception(
             static function () {
-                    ParserModel::build('2+1)')->evaluate();
+                ParserModel::build('2+1)')->evaluate();
             }
         )
             ->isInstanceOf(OutOfScopeException::class)
             ->hasMessage('It misses an open scope');
 
+    }
+    public function testDivisionByZeroException()
+    {
         $this->exception(
             static function () {
                 ParserModel::build('2/0')->evaluate();
             }
         )
             ->isInstanceOf(DivisionByZeroException::class);
+    }
+    public function testSinArgumentException()
+    {
+        $this->exception(
+            static function () {
+                ParserModel::build('sin(2,3)')->evaluate();
+            }
+        )
+            ->isInstanceOf(ParsingException::class);
+    }
+    public function testOperationException()
+    {
+        $this->exception(
+            static function () {
+                ParserModel::build('5++-15')->evaluate();
+            }
+        )
+            ->isInstanceOf(ParsingException::class);
+    }
+    public function testLnArgumentException()
+    {
+        $this->exception(
+            static function () {
+                ParserModel::build('ln(1,2)')->evaluate();
+            }
+        )
+            ->isInstanceOf(ParsingException::class);
     }
 
     /**

@@ -151,11 +151,18 @@ class Scope
 
             $after = array_slice($this->operations, $pos + 2);
 
-            $left = (float)($this->operations[$pos - 1] ?? 0);
-            $right = (float)($this->operations[$pos + 1] ?? 0);
+            $left = ($this->operations[$pos - 1] ?? 0);
+            $right = ($this->operations[$pos + 1] ?? 0);
+
+            if (!is_numeric($left)) {
+                throw new ParsingException($left . 'is not number');
+            }
+            if (!is_numeric($right)) {
+                throw new ParsingException($right . 'is not number');
+            }
 
             $this->operations = array_slice($this->operations, 0, $pos - 1);
-            $this->operations[] = $this->calcOperator($mainOperator, $left, $right);
+            $this->operations[] = $this->calcOperator($mainOperator, (float)$left, (float)$right);
             $this->operations = array_values(array_merge($this->operations, $after));
         }
 
