@@ -151,8 +151,8 @@ class Scope
 
             $after = array_slice($this->operations, $pos + 2);
 
-            $left = ($this->operations[$pos - 1] ?? 0);
-            $right = ($this->operations[$pos + 1] ?? 0);
+            $left = ($this->operations[$pos - 1] ?? null);
+            $right = ($this->operations[$pos + 1] ?? null);
 
             if (!is_numeric($left)) {
                 throw new ParsingException($left . 'is not number');

@@ -88,6 +88,16 @@ class Parser extends test
             ->isInstanceOf(ParsingException::class);
     }
 
+    public function testEmptyArgumentException()
+    {
+        $this->exception(
+            static function () {
+                ParserModel::build('if(>1,1,2)')->evaluate();
+            }
+        )
+            ->isInstanceOf(ParsingException::class);
+    }
+
     /**
      * @dataProvider operationsDataProvider
      */
