@@ -10,7 +10,6 @@ use exprlib\exceptions\OutOfScopeException;
 use exprlib\exceptions\ParsingException;
 use exprlib\exceptions\UnknownTokenException;
 use exprlib\Parser as ParserModel;
-use mageekguy\atoum;
 
 /**
  * Parser
@@ -186,6 +185,10 @@ class Parser extends test
             ['0 & 1', 0],
             ['1 & 1', 1],
             ['1 & 1 | 1 & 0', 1],
+            ['round(2.555,0)', 3],
+            ['round(2.555,1)', 2.6],
+            ['round(222.555,-1)', 220],
+            ['round(225.555,-1)', 230],
         ];
     }
 }
