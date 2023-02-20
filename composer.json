@@ -17,7 +17,7 @@
         }
     ],
     "require": {
-        "php": ">=7.2"
+        "php": ">=7.3"
     },
     "autoload":     {
         "psr-0": {
@@ -25,7 +25,7 @@
         }
     },
     "require-dev": {
-        "atoum/atoum": "master"
+        "atoum/atoum": "4.0.0"
     },
     "config": {
         "bin-dir": "bin"
