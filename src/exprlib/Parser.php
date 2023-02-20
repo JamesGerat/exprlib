@@ -71,6 +71,7 @@ class Parser
                 |log\(
                 |ln\(
                 |pow\(
+                |round\(
                 |exp\(
                 |acos\(
                 |cos\(
