@@ -204,7 +204,7 @@ class Parser
         $this->getContext()->setBuilder($this);
     }
 
-    public function popContext(): Scope
+    public function popContext(): ?Scope
     {
         return array_pop($this->contextStack);
     }

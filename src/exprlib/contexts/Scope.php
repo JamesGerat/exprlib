@@ -36,7 +36,7 @@ class Scope
     /**
      * handle the next token from the tokenized list. example actions
      * on a token would be to add it to the current context expression list,
-     * to push a new context on the the context stack, or pop a context off the
+     * to push a new context on the context stack, or pop a context off the
      * stack.
      */
     /**
@@ -70,6 +70,8 @@ class Scope
                 throw new OutOfScopeException('It misses an open scope');
             }
             $newContext->addOperation($scopeOperation);
+        } elseif ($token === 'round(') {
+            $this->builder->pushContext(new scope\Round($token));
         } elseif ($token === 'sin(') {
             $this->builder->pushContext(new scope\Sin($token));
         } elseif ($token === 'acos(') {
@@ -129,7 +131,7 @@ class Scope
 
     /**
      * order of operations:
-     * - parentheses, these should all ready be executed before this method is called
+     * - parentheses, these should already be executed before this method is called
      * - exponents, first order
      * - mult/divi, second order
      * - addi/subt, third order
@@ -220,40 +222,29 @@ class Scope
         switch ($mainOperator) {
             case '^':
                 return $left ** $right;
-                break;
             case '*':
                 return ($left * $right);
-                break;
             case '/':
-                if ($right === (float)0) {
+                if ($right === 0.0) {
                     throw new DivisionByZeroException('Division by zero');
                 }
                 return (float)($left / $right);
-                break;
             case '-':
                 return ($left - $right);
-                break;
             case '+':
                 return $left + $right;
-                break;
             case '>':
                 return $left > $right;
-                break;
             case '<':
                 return $left < $right;
-                break;
             case '!=':
                 return $left !== $right;
-                break;
             case '=':
                 return $left === $right;
-                break;
             case '&':
                 return $left && $right;
-                break;
             case '|':
                 return $left || $right;
-                break;
         }
         throw new ParsingException('Unknown operator:' . $mainOperator);
     }
