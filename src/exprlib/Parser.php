@@ -22,7 +22,7 @@ class Parser
     protected $vars = [];
 
     /**
-     * @param string $content content
+     * @param string|null $content content
      */
     public function __construct(string $content = null)
     {
@@ -101,7 +101,7 @@ class Parser
     }
 
     /**
-     * this is the the loop that transforms the tokens array into
+     * this is the loop that transforms the tokens array into
      * a tree structure.
      */
     /**
@@ -123,6 +123,11 @@ class Parser
         return $this;
     }
 
+    /**
+     * @param array $vars
+     * @return $this
+     * @noinspection PhpUnused Method for call from outside.
+     */
     public function setVars(array $vars): Parser
     {
         if (count($vars)) {
@@ -175,6 +180,10 @@ class Parser
         return $this;
     }
 
+    /**
+     * @return mixed
+     * @noinspection PhpUnused Method may be used for debug.
+     */
     public function getContent()
     {
         return $this->content;
@@ -200,6 +209,9 @@ class Parser
         return array_pop($this->contextStack);
     }
 
+    /**
+     * @return false|Scope
+     */
     public function getContext()
     {
         return end($this->contextStack);
