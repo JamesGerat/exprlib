@@ -40,6 +40,7 @@ exprlib\Parser::build('2/(3.6*8.5)')->evaluate(); // 0.06536
 exprlib\Parser::build('2+(6/2)+(8*3)')->evaluate(); // 29
 exprlib\Parser::build('2+3+6+6/2+3')->evaluate(); // 17
 exprlib\Parser::build('0.001 + 0.02')->evaluate(); // 0.021
+exprlib\Parser::build("100 - 80 - 90 + 100")->evaluate();//30
 
 // functions
 exprlib\Parser::build('COS(0)')->evaluate(); // 1
