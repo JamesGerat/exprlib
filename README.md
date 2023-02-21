@@ -68,6 +68,10 @@ exprlib\Parser::build('avg(10, 20, 30)')->evaluate(); // 20
 exprlib\Parser::build('log(0)')->evaluate(); // -INF
 exprlib\Parser::build('log(0)*-1')->evaluate(); // INF
 exprlib\Parser::build(sprintf('acos(%s)', rad2deg(8)))->evaluate(); // NAN
+exprlib\Parser::build('round(2.555,0)')->evaluate(); // 3
+exprlib\Parser::build('round(2.555,1)')->evaluate(); // 2.6
+exprlib\Parser::build('round(222.555,-1)')->evaluate(); // 220
+exprlib\Parser::build('round(225.555,-1)')->evaluate(); // 230
 
 // min-max
 exprlib\Parser::build('max(10,20,30)')->evaluate(); // 30
