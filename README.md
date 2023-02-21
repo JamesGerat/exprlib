@@ -18,6 +18,7 @@ List of functions and features:
 - cos
 - sin
 - tan
+- round
 - pow
 - sqrt
 - log
