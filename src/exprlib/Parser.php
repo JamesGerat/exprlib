@@ -94,7 +94,7 @@ class Parser
               )
             @ix',
             $this->content,
-            null,
+            0,
             PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY
         );
 
